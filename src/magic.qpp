@@ -4,35 +4,98 @@
 #include "qoremagic.h"
 
 
+/** @defgroup magic_constants libmagic Constants
+*/
+//@{
 
-//! 
+//! No flags
+const MAGIC_NONE              = 0x000000;
+//! Turn on debugging
+const MAGIC_DEBUG             = 0x000001;
+//! Follow symlinks
+const MAGIC_SYMLINK           = 0x000002;
+//! Check inside compressed files
+const MAGIC_COMPRESS          = 0x000004;
+//! Look at the contents of devices
+const MAGIC_DEVICES           = 0x000008;
+//! Return the MIME type
+const MAGIC_MIME_TYPE         = 0x000010;
+//! Return all matches
+const MAGIC_CONTINUE          = 0x000020;
+//! Print warnings to stderr
+const MAGIC_CHECK             = 0x000040;
+//! Restore access time on exit
+const MAGIC_PRESERVE_ATIME    = 0x000080;
+//! Don't translate unprintable chars
+const MAGIC_RAW               = 0x000100;
+//! Handle ENOENT etc as real errors
+const MAGIC_ERROR             = 0x000200;
+//! Return the MIME encoding
+const MAGIC_MIME_ENCODING     = 0x000400;
+//! Returns MIME type with encoding
+const MAGIC_MIME              = 0x000410;
+//! Return the Apple creator and type
+const MAGIC_APPLE             = 0x000800;
+//! Don't check for compressed files
+const MAGIC_NO_CHECK_COMPRESS = 0x001000;
+//! Don't check for tar files
+const MAGIC_NO_CHECK_TAR      = 0x002000;
+//! Don't check magic entries
+const MAGIC_NO_CHECK_SOFT     = 0x004000;
+//! Don't check application type
+const MAGIC_NO_CHECK_APPTYPE  = 0x008000;
+//! Don't check for elf details
+const MAGIC_NO_CHECK_ELF      = 0x010000;
+//! Don't check for text files
+const MAGIC_NO_CHECK_TEXT     = 0x020000;
+//! Don't check for cdf files
+const MAGIC_NO_CHECK_CDF      = 0x040000;
+//! Don't check tokens
+const MAGIC_NO_CHECK_TOKENS   = 0x100000;
+//! Don't check text encodings
+const MAGIC_NO_CHECK_ENCODING = 0x200000;
+//! No built-in tests only consult the magic file
+const MAGIC_NO_CHECK_BUILTIN  = 0x3fb000;
+//@}
+
+
+//! A low level wrapper around libmagic 
 /**
+Example of use:
+
+@code
+my Magic $m(MIME_TYPE);
+printf("%N\n", $m.file("/etc/resolv.conf"));
+
+"inode/symlink; charset=binary"
+@endcode
  */
 qclass Magic [arg=QoreMagic* priv];
 
-//!
+//! Constructs a dummy \see MAGIC_NONE instance
 /**
  */
 Magic::constructor() {
     self->setPrivate(CID_MAGIC, new QoreMagic(xsink));
 }
 
-//!
-/**
+//! Constructs specialized instance
+/** @param flags features set based on @ref magic_constants
  */
 Magic::constructor(softint flags) {
     self->setPrivate(CID_MAGIC, new QoreMagic((int)flags, xsink));
 }
 
-//!
-/**
+//! Resets new flags/features based on @ref magic_constants
+/** @param flags New flags to replace old settings.
   */
 Magic::setFlags(softint flags) {
     priv->setFlags(flags, xsink);
 }
 
-//!
-/**
+//! Returns magic info for a file (path)
+/** @param fileName a path to file to be examined
+    @retval string a text with requested info
   */
 string Magic::file(softstring fileName) {
     return priv->file(fileName, xsink);
