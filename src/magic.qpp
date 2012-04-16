@@ -72,7 +72,7 @@ printf("%N\n", $m.file("/etc/resolv.conf"));
  */
 qclass Magic [arg=QoreMagic* priv];
 
-//! Constructs a dummy \see MAGIC_NONE instance
+//! Constructs a dummy @see MAGIC_NONE instance
 /**
  */
 Magic::constructor() {
