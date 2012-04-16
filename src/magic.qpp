@@ -1,0 +1,41 @@
+/* -*- mode: c++; indent-tabs-mode: nil -*- */
+
+#include <qore/Qore.h>
+#include "qoremagic.h"
+
+
+
+//! 
+/**
+ */
+qclass Magic [arg=QoreMagic* priv];
+
+//!
+/**
+ */
+Magic::constructor() {
+    self->setPrivate(CID_MAGIC, new QoreMagic(xsink));
+}
+
+//!
+/**
+ */
+Magic::constructor(softint flags) {
+    self->setPrivate(CID_MAGIC, new QoreMagic((int)flags, xsink));
+}
+
+//!
+/**
+  */
+Magic::setFlags(softint flags) {
+    priv->setFlags(flags, xsink);
+}
+
+//!
+/**
+  */
+string Magic::file(softstring fileName) {
+    return priv->file(fileName, xsink);
+}
+
+
