@@ -56,6 +56,7 @@ add_definitions("-DPACKAGE_VERSION=\"${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION
 include_directories( ${QORE_INCLUDE_DIR} )
 include_directories( ${CMAKE_BINARY_DIR} )
 include_directories( ${CMAKE_SOURCE_DIR}/src )
+include_directories( ${LIBMAGIC_INCLUDE_DIR} )
 
 set(CPP_SRC
     src/qoremagic.cpp
