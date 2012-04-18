@@ -20,7 +20,10 @@ class QoreMagic : public AbstractPrivateData {
         DLLLOCAL QoreMagic(int flags, ExceptionSink *xsink);
 
         DLLLOCAL void setFlags(int flags, ExceptionSink *xsink);
+
         DLLLOCAL AbstractQoreNode* file(const QoreStringNode *fileName, ExceptionSink *xsink);
+//        DLLLOCAL AbstractQoreNode* descriptor(const File *f, ExceptionSink *xsink);
+        DLLLOCAL AbstractQoreNode* buffer(const AbstractQoreNode *data, ExceptionSink *xsink);
 
     private:
         magic_t m_magic;   

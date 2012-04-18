@@ -70,7 +70,7 @@ printf("%N\n", $m.file("/etc/resolv.conf"));
 "inode/symlink; charset=binary"
 @endcode
  */
-qclass Magic [arg=QoreMagic* priv];
+qclass Magic [arg=QoreMagic* priv; dom=FILESYSTEM];
 
 //! Constructs a dummy @see MAGIC_NONE instance
 /**
@@ -97,8 +97,24 @@ Magic::setFlags(softint flags) {
 /** @param fileName a path to file to be examined
     @retval string a text with requested info
   */
-string Magic::file(softstring fileName) {
+string Magic::file(softstring fileName) [dom=FILESYSTEM] {
     return priv->file(fileName, xsink);
+}
+
+// Returns magic info for a file (object)
+/** @param file a File object to be examined
+    @retval string a text with requested info
+  */
+//string Magic::descriptor(File[File] file) [dom=FILESYSTEM] {
+//    return priv->descriptor(file, xsink);
+//}
+
+//! Returns magic info for a data buffer
+/** @param data a data to file to be examined
+    @retval string a text with requested info
+  */
+string Magic::buffer(data data) [dom=FILESYSTEM] {
+    return priv->buffer(data, xsink);
 }
 
 

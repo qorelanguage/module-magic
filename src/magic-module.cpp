@@ -20,7 +20,7 @@ DLLEXPORT qore_module_delete_t qore_module_delete = magic_module_delete;
 DLLEXPORT qore_license_t qore_module_license = QL_LGPL;
 
 
- static QoreNamespace MNS("Magic");
+static QoreNamespace MNS("Magic");
 
 
 QoreStringNode * magic_module_init() {
