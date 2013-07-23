@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2013 Petr Vanek, Qore Technologies
+  Copyright 2012 - 2013 Qore Technologies
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -49,6 +49,7 @@ class QoreMagic : public AbstractPrivateData {
 
     private:
         magic_t m_magic;   
+        QoreThreadLock m_lock;
 
         void setup(int flags, ExceptionSink *xsink);
         bool checkException(ExceptionSink *xsink);

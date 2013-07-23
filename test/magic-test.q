@@ -26,9 +26,3 @@ printf("string buffer: %N\n", $m.buffer($str));
 printf("binary buffer: %N\n", $m.buffer($bin));
 
 
-#printf("\n::descriptor test\n");
-#printf("file mime: %N\n", $m.descriptor($f));
-
-$f.close();
-$b.close();
-

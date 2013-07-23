@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2013 Petr Vanek, Qore Technologies
+  Copyright 2012 - 2013 Qore Technologies
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -49,6 +49,8 @@ QoreMagic::QoreMagic(int flags, ExceptionSink *xsink)
 
 void QoreMagic::setup(int flags, ExceptionSink *xsink)
 {
+    AutoLocker al(m_lock);
+
     m_magic = magic_open(flags);
     checkException(xsink);
     if (magic_load(m_magic, 0))
@@ -62,12 +64,16 @@ QoreMagic::~QoreMagic()
 
 void QoreMagic::setFlags(int flags, ExceptionSink *xsink)
 {
+    AutoLocker al(m_lock);
+
     if (magic_setflags(m_magic, flags))
         checkException(xsink);
 }
 
 AbstractQoreNode* QoreMagic::file(const QoreStringNode *fileName, ExceptionSink *xsink)
 {
+    AutoLocker al(m_lock);
+
     const char *ret = magic_file(m_magic, fileName->getBuffer());
     if (checkException(xsink))
         return 0;
@@ -88,6 +94,8 @@ AbstractQoreNode* QoreMagic::file(const QoreStringNode *fileName, ExceptionSink 
 
 AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, ExceptionSink *xsink)
 {
+    AutoLocker al(m_lock);
+
     qore_type_t qt = data->getType();
     const char *ret;
     if (qt == NT_BINARY) {
