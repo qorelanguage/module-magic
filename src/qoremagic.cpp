@@ -49,8 +49,6 @@ QoreMagic::QoreMagic(int flags, ExceptionSink *xsink)
 
 void QoreMagic::setup(int flags, ExceptionSink *xsink)
 {
-    AutoLocker al(m_lock);
-
     m_magic = magic_open(flags);
     checkException(xsink);
     if (magic_load(m_magic, 0))
