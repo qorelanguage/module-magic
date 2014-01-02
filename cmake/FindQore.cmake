@@ -17,8 +17,10 @@ SET(QORE_FOUND FALSE)
 
 MACRO (QORE_WRAP_QPP _cpp_files _inputs )
   message(STATUS "QPP: ${QORE_QPP_EXECUTABLE}")
+  message(STATUS "QPP2: ${_inputs}")
 
   FOREACH (it ${_inputs})
+    message(STATUS "QPP1: ${it}")
     GET_FILENAME_COMPONENT(_outfile ${it} NAME_WE)
     GET_FILENAME_COMPONENT(_infile ${it} ABSOLUTE)
     SET(_cppfile ${CMAKE_CURRENT_BINARY_DIR}/${_outfile}.cpp)
