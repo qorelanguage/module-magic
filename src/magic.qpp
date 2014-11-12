@@ -124,13 +124,14 @@ string Magic::file(softstring fileName) [dom=FILESYSTEM] {
     return priv->file(fileName, xsink);
 }
 
-// Returns magic info for a file (object)
-/** @param file a File object to be examined
+//! Returns magic info for a file (path)
+/** @param fileName a path to file to be examined
+    @param flags settings flags
     @retval string a text with requested info
   */
-//string Magic::descriptor(File[File] file) [dom=FILESYSTEM] {
-//    return priv->descriptor(file, xsink);
-//}
+string Magic::file(softstring fileName, softint flags) [dom=FILESYSTEM] {
+    return priv->file(fileName, flags, xsink);
+}
 
 //! Returns magic info for a data buffer
 /** @param data a data to file to be examined
@@ -140,4 +141,12 @@ string Magic::buffer(data data) [dom=FILESYSTEM] {
     return priv->buffer(data, xsink);
 }
 
+//! Returns magic info for a data buffer
+/** @param data a data to file to be examined
+    @param flags settings flags
+    @retval string a text with requested info
+  */
+string Magic::buffer(data data, softint flags) [dom=FILESYSTEM] {
+    return priv->buffer(data, flags, xsink);
+}
 

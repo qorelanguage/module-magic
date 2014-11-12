@@ -25,92 +25,122 @@
 #include "qoremagic.h"
 
 
-
-bool QoreMagic::checkException(ExceptionSink *xsink)
+class MagicHelper
 {
-    const char *errmsg = magic_error(m_magic);
-    if (errmsg) {
-        int err = magic_errno(m_magic);
-        xsink->raiseException("MAGIC-ERROR", "ERR-%d: %s", err, errmsg);
-        return true;
+    magic_t m_magic;
+
+public:
+    MagicHelper(int flags, ExceptionSink *xsink) {
+        m_magic = magic_open(flags);
+        if (m_magic == NULL)
+            checkException(xsink);
+	if (magic_load(m_magic, 0) == -1)
+            checkException(xsink);
     }
-    return false;
-}
+
+    ~MagicHelper() {
+        magic_close(m_magic);
+    }
+
+    magic_t* magic() {
+        return &m_magic;
+    }
+
+    const char* file(const char *fname) {
+        return magic_file(m_magic, fname);
+    }
+
+    const char* buffer(const void *data, size_t len) {
+        return magic_buffer(m_magic, data, len);
+    }
+
+    bool checkException(ExceptionSink *xsink)
+    {
+        const char *errmsg = magic_error(m_magic);
+        if (errmsg) {
+            int err = magic_errno(m_magic);
+            xsink->raiseException("MAGIC-ERROR", "ERR-%d: %s", err, errmsg);
+            return true;
+        }
+        return false;
+    }
+};
+
 
 QoreMagic::QoreMagic(ExceptionSink *xsink)
 {
-    setup(MAGIC_NONE, xsink);
+    m_flags = MAGIC_NONE;
 }
 
 QoreMagic::QoreMagic(int flags, ExceptionSink *xsink)
 {
-    setup(flags, xsink);
-}
-
-void QoreMagic::setup(int flags, ExceptionSink *xsink)
-{
-    m_magic = magic_open(flags);
-    checkException(xsink);
-    if (magic_load(m_magic, 0))
-        checkException(xsink);
+    m_flags = flags;
 }
 
 QoreMagic::~QoreMagic()
 {
-    magic_close(m_magic);
 }
 
 void QoreMagic::setFlags(int flags, ExceptionSink *xsink)
 {
     AutoLocker al(m_lock);
-
-    if (magic_setflags(m_magic, flags))
-        checkException(xsink);
+    m_flags = flags;
 }
 
 AbstractQoreNode* QoreMagic::file(const QoreStringNode *fileName, ExceptionSink *xsink)
 {
+    return file(fileName, m_flags, xsink);
+}
+
+AbstractQoreNode* QoreMagic::file(const QoreStringNode *fileName, int flags, ExceptionSink *xsink)
+{
     AutoLocker al(m_lock);
 
-    const char *ret = magic_file(m_magic, fileName->getBuffer());
-    if (checkException(xsink))
+    MagicHelper magic(flags, xsink);
+
+    if (*xsink)
         return 0;
+
+    const char *ret = magic.file(fileName->getBuffer());
+
+    if (magic.checkException(xsink))
+        return 0;
+
     return new QoreStringNode(ret);
 }
 
-//AbstractQoreNode* QoreMagic::descriptor(const File *f, ExceptionSink *xsink)
-//{
-//    ReferenceHolder<File> rh(f, xsink);
-//    int fd = rh->getFD();
-//    printf("FD: %d\n", fd);
-//    const char *ret = magic_descriptor(m_magic, fd);
-//
-//    if (checkException(xsink))
-//        return 0;
-//    return new QoreStringNode(ret);
-//}
-
 AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, ExceptionSink *xsink)
 {
+    return buffer(data, m_flags, xsink);
+}
+
+AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, int flags, ExceptionSink *xsink)
+{
     AutoLocker al(m_lock);
+
+    MagicHelper magic(flags, xsink);
+
+    if (*xsink)
+        return 0;
 
     qore_type_t qt = data->getType();
     const char *ret;
     if (qt == NT_BINARY) {
         const BinaryNode *s = reinterpret_cast<const BinaryNode*>(data);
-        ret = magic_buffer(m_magic, s->getPtr(), s->size());
+        ret = magic.buffer(s->getPtr(), s->size());
     }
     else if (qt == NT_STRING) {
         const QoreStringNode *s = reinterpret_cast<const QoreStringNode*>(data);
-        ret = magic_buffer(m_magic, s->getBuffer(), s->size());
+        ret = magic.buffer(s->getBuffer(), s->size());
     }
     else {
         xsink->raiseException("MAGIC-ERROR", "Magic::buffer requires 'data' argument: string or binary. Got: %s", data->getTypeName());
         return 0;
     }
-    
-    if (checkException(xsink))
+
+    if (magic.checkException(xsink))
         return 0;
+
     return new QoreStringNode(ret);
 }
 
