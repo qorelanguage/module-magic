@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2013 Qore Technologies
+  Copyright 2012 - 2016 Qore Technologies
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -32,6 +32,9 @@ This module is released under the <a href="http://www.gnu.org/licenses/old-licen
 and is tagged as such in the module's header (meaning it can be loaded unconditionally
 regardless of how the %Qore library was initialized).
 
+This module provides the following class:
+- @ref Qore::Magic::Magic "Magic"
+
 The *Single Unix Specification (SUS)* specifies that a series of tests are
 performed on the file specified on the command line:
 - if the file cannot be read, its status undetermined, or its type undetermined,
@@ -49,11 +52,26 @@ This differs from other simpler methods such as file extensions and
 schemes like MIME.
 
 In most implementations, the file command uses a database to drive
-the probing of the lead bytes. That database is implemented in 
-file called magic, whose location is usually in /etc/magic
-/usr/share/file/magic or a similar location.
+the probing of the lead bytes. That database is implemented in
+file called \c magic, whose location is usually in \c /etc/magic,
+\c /usr/share/file/magic or a similar location.
 
-To use the module in a %Qore script, use the \c %%requires directive as follows:
-    @code %requires magic @endcode
+To use the module in a %Qore script, use the \c %%requires directive as in the following example:
+@code{.py}
+%new-style
+%strict-args
+%require-types
+%enable-all-warnings
+
+# import the magic module API
+%requires magic
+
+Magic m(MAGIC_MIME_TYPE);
+printf("%y\n", m.file("/etc/resolv.conf"));
+@endcode
+The above command would result in the following output when executed on a standard UNIX or UNIX-like system:
+@verbatim
+"inode/symlink; charset=binary"
+@endverbatim
 
 */

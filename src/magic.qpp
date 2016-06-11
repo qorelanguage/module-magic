@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2013 Qore Technologies
+  Copyright 2012 - 2016 Qore Technologies
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -82,16 +82,18 @@ const MAGIC_NO_CHECK_BUILTIN  = 0x3fb000;
 //@}
 
 
-//! A low level wrapper around libmagic 
+//! A low level wrapper around libmagic
 /**
 Example of use:
 
-@code
-my Magic $m(MIME_TYPE);
-printf("%N\n", $m.file("/etc/resolv.conf"));
-
-"inode/symlink; charset=binary"
+@code{.py}
+Magic m(MAGIC_MIME_TYPE);
+printf("%y\n", m.file("/etc/resolv.conf"));
 @endcode
+Resulting in:
+@verbatim
+"inode/symlink; charset=binary"
+@endverbatim
  */
 qclass Magic [arg=QoreMagic* priv; dom=FILESYSTEM; ns=Qore::Magic];
 
@@ -149,4 +151,3 @@ string Magic::buffer(data data) [dom=FILESYSTEM] {
 string Magic::buffer(data data, softint flags) [dom=FILESYSTEM] {
     return priv->buffer(data, flags, xsink);
 }
-
