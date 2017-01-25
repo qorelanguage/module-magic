@@ -38,12 +38,14 @@ qore_wrap_qpp(QPP_SOURCES ${QPP_SRC})
 
 SET (module_name "magic")
 
-add_library(${module_name} SHARED ${CPP_SRC} ${QPP_SOURCES})
-qore_binary_module(${module_name} "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" ${LIBMAGIC_LIBRARY})
+set(_XTRA_LIBS "")
+if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+   set(_XTRA_LIBS "${_XTRA_LIBS};shlwapi;regex")
+endif()
+
+add_library(${module_name} MODULE ${CPP_SRC} ${QPP_SOURCES})
+qore_binary_module(${module_name} "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" ${LIBMAGIC_LIBRARY} ${_XTRA_LIBS})
 
 qore_dist("${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 qore_config_info()
-
-
-
