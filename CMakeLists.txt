@@ -9,7 +9,7 @@ set (VERSION_PATCH 2)
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
-FIND_PACKAGE (Qore REQUIRED)
+FIND_PACKAGE (Qore 0.9 REQUIRED)
 
 find_package(LibMagic REQUIRED)
 
