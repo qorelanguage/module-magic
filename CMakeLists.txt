@@ -9,7 +9,7 @@ set (VERSION_PATCH 2)
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
 
-FIND_PACKAGE (Qore REQUIRED)
+FIND_PACKAGE (Qore 0.9 REQUIRED)
 
 find_package(LibMagic REQUIRED)
 
@@ -34,7 +34,7 @@ set(QPP_SRC
     src/magic.qpp
    )
 
-qore_wrap_qpp(QPP_SOURCES ${QPP_SRC})
+qore_wrap_qpp_value(QPP_SOURCES ${QPP_SRC})
 
 SET (module_name "magic")
 

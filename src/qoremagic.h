@@ -1,24 +1,24 @@
 /* -*- mode: c++; indent-tabs-mode: nil -*- */
 /*
-  libmagic Qore wrapper
+    libmagic Qore wrapper
 
-  Qore Programming Language
+    Qore Programming Language
 
-  Copyright 2012 - 2013 Qore Technologies
+    Copyright 2012 - 2018 Qore Technologies, s.r.o.
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 
@@ -45,8 +45,8 @@ class QoreMagic : public AbstractPrivateData {
 
         DLLLOCAL AbstractQoreNode* file(const QoreStringNode *fileName, ExceptionSink *xsink);
         DLLLOCAL AbstractQoreNode* file(const QoreStringNode *fileName, int flags, ExceptionSink *xsink);
-        DLLLOCAL AbstractQoreNode* buffer(const AbstractQoreNode *data, ExceptionSink *xsink);
-        DLLLOCAL AbstractQoreNode* buffer(const AbstractQoreNode *data, int flags, ExceptionSink *xsink);
+        DLLLOCAL AbstractQoreNode* buffer(QoreValue data, ExceptionSink *xsink);
+        DLLLOCAL AbstractQoreNode* buffer(QoreValue data, int flags, ExceptionSink *xsink);
 
     private:
         int m_flags;

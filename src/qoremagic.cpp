@@ -1,24 +1,24 @@
 /* -*- mode: c++; indent-tabs-mode: nil -*- */
 /*
-  libmagic Qore wrapper
+    libmagic Qore wrapper
 
-  Qore Programming Language
+    Qore Programming Language
 
-  Copyright 2012 - 2013 Qore Technologies
+    Copyright 2012 - 2018 Qore Technologies, s.r.o.
 
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) any later version.
 
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include <qore/Qore.h>
@@ -109,12 +109,12 @@ AbstractQoreNode* QoreMagic::file(const QoreStringNode *fileName, int flags, Exc
     return new QoreStringNode(ret);
 }
 
-AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, ExceptionSink *xsink)
+AbstractQoreNode* QoreMagic::buffer(QoreValue data, ExceptionSink *xsink)
 {
     return buffer(data, m_flags, xsink);
 }
 
-AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, int flags, ExceptionSink *xsink)
+AbstractQoreNode* QoreMagic::buffer(QoreValue data, int flags, ExceptionSink *xsink)
 {
     AutoLocker al(m_lock);
 
@@ -123,18 +123,18 @@ AbstractQoreNode* QoreMagic::buffer(const AbstractQoreNode *data, int flags, Exc
     if (*xsink)
         return 0;
 
-    qore_type_t qt = data->getType();
+    qore_type_t qt = data.getType();
     const char *ret;
     if (qt == NT_BINARY) {
-        const BinaryNode *s = reinterpret_cast<const BinaryNode*>(data);
+        const BinaryNode* s = data.get<const BinaryNode>();
         ret = magic.buffer(s->getPtr(), s->size());
     }
     else if (qt == NT_STRING) {
-        const QoreStringNode *s = reinterpret_cast<const QoreStringNode*>(data);
-        ret = magic.buffer(s->getBuffer(), s->size());
+        const QoreStringNode* s = data.get<const QoreStringNode>();
+        ret = magic.buffer(s->c_str(), s->size());
     }
     else {
-        xsink->raiseException("MAGIC-ERROR", "Magic::buffer requires 'data' argument: string or binary. Got: %s", data->getTypeName());
+        xsink->raiseException("MAGIC-ERROR", "Magic::buffer requires 'data' argument: string or binary. Got: %s", data.getTypeName());
         return 0;
     }
 
