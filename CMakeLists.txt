@@ -36,6 +36,11 @@ set(QPP_SRC
 
 qore_wrap_qpp_value(QPP_SOURCES ${QPP_SRC})
 
+foreach (it ${QPP_SOURCES})
+    GET_FILENAME_COMPONENT(_outfile ${it} NAME_WE)
+    set(QPP_DOX ${QPP_DOX} ${CMAKE_CURRENT_BINARY_DIR}/${_outfile}.dox.h)
+endforeach()
+
 SET (module_name "magic")
 
 set(_XTRA_LIBS "")
@@ -44,6 +49,10 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 endif()
 
 add_library(${module_name} MODULE ${CPP_SRC} ${QPP_SOURCES})
+
+set(MODULE_DOX_INPUT ${CMAKE_SOURCE_DIR}/src/main.cpp ${JAVA_JAR_SRC_STR} ${QPP_DOX})
+string(REPLACE ";" " " MODULE_DOX_INPUT "${MODULE_DOX_INPUT}")
+
 qore_binary_module(${module_name} "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" ${LIBMAGIC_LIBRARY} ${_XTRA_LIBS})
 
 qore_dist("${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
