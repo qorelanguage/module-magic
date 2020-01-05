@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2016 Qore Technologies
+  Copyright 2012 - 2020 Qore Technologies, s.r.o.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -38,15 +38,15 @@ This module provides the following class:
 The *Single Unix Specification (SUS)* specifies that a series of tests are
 performed on the file specified on the command line:
 - if the file cannot be read, its status undetermined, or its type undetermined,
-  @ref Magic will indicate that the file was processed and its type was undetermined.
+  @ref Qore::Magic::Magic "Magic" will indicate that the file was processed and its type was undetermined.
 - file must be able to determine the types directory, FIFO, socket, block
   special file, and character special file
 - zero-length files are identified as such
-- an initial part of file is considered and @ref Magic is to use position-sensitive tests
-- the entire file is considered and @ref Magic is to use context-sensitive tests
+- an initial part of file is considered and @ref Qore::Magic::Magic "Magic" is to use position-sensitive tests
+- the entire file is considered and @ref Qore::Magic::Magic "Magic" is to use context-sensitive tests
 - the file is identified as a data file
 
-@ref Magic position-sensitive tests are normally implemented by matching various
+@ref Qore::Magic::Magic "Magic" position-sensitive tests are normally implemented by matching various
 locations within the file against a textual database of magic numbers.
 This differs from other simpler methods such as file extensions and
 schemes like MIME.
@@ -73,5 +73,4 @@ The above command would result in the following output when executed on a standa
 @verbatim
 "inode/symlink; charset=binary"
 @endverbatim
-
 */
