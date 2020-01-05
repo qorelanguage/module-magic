@@ -43,6 +43,10 @@ endforeach()
 
 SET (module_name "magic")
 
+set(QORE_DOX_TMPL_SRC
+  docs/mainpage.dox.tmpl
+)
+
 set(_XTRA_LIBS "")
 if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
    set(_XTRA_LIBS "${_XTRA_LIBS};shlwapi;regex")
@@ -50,7 +54,7 @@ endif()
 
 add_library(${module_name} MODULE ${CPP_SRC} ${QPP_SOURCES})
 
-set(MODULE_DOX_INPUT ${CMAKE_SOURCE_DIR}/src/main.cpp ${JAVA_JAR_SRC_STR} ${QPP_DOX})
+set(MODULE_DOX_INPUT ${CMAKE_SOURCE_DIR}/src/main.cpp ${QPP_DOX})
 string(REPLACE ";" " " MODULE_DOX_INPUT "${MODULE_DOX_INPUT}")
 
 qore_binary_module(${module_name} "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" ${LIBMAGIC_LIBRARY} ${_XTRA_LIBS})
