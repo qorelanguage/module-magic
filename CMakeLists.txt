@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 2.8.3)
 
 project(qore-magic-module)
 
-set (VERSION_MAJOR 0)
+set (VERSION_MAJOR 1)
 set (VERSION_MINOR 0)
-set (VERSION_PATCH 2)
+set (VERSION_PATCH 0)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )
@@ -32,9 +32,14 @@ set(CPP_SRC
 
 set(QPP_SRC
     src/magic.qpp
-   )
+)
 
 qore_wrap_qpp_value(QPP_SOURCES ${QPP_SRC})
+
+foreach (it ${QPP_SOURCES})
+    GET_FILENAME_COMPONENT(_outfile ${it} NAME_WE)
+    set(QPP_DOX ${QPP_DOX} ${CMAKE_CURRENT_BINARY_DIR}/${_outfile}.dox.h)
+endforeach()
 
 SET (module_name "magic")
 
@@ -49,7 +54,7 @@ endif()
 
 add_library(${module_name} MODULE ${CPP_SRC} ${QPP_SOURCES})
 
-set(MODULE_DOX_INPUT ${CMAKE_SOURCE_DIR}/src/main.cpp)
+set(MODULE_DOX_INPUT ${CMAKE_SOURCE_DIR}/src/main.cpp ${QPP_DOX})
 string(REPLACE ";" " " MODULE_DOX_INPUT "${MODULE_DOX_INPUT}")
 
 qore_binary_module(${module_name} "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}" ${LIBMAGIC_LIBRARY} ${_XTRA_LIBS})

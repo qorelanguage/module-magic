@@ -34,7 +34,7 @@
 
 Summary: Libmagic module for Qore
 Name: qore-magic-module
-Version: 0.0.1
+Version: 1.0.0
 Release: 1%{dist}
 License: LGPL-2.0+
 Group: Development/Languages/Other
@@ -48,37 +48,27 @@ BuildRequires: cmake
 BuildRequires: file-devel
 BuildRequires: doxygen
 
-
 %description
-libmagic (file) wrapper for Qore programming language
+libmagic (file magic) API for the Qore Programming Language
 
 %prep
 %setup -q
-cmake -DCMAKE_INSTALL_PREFIX=/usr .
 
 %build
-find test -name *.q|xargs chmod 644
+export CXXFLAGS="%{?optflags}"
+cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RELWITHDEBINFO -DCMAKE_SKIP_RPATH=1 -DCMAKE_SKIP_INSTALL_RPATH=1 -DCMAKE_SKIP_BUILD_RPATH=1 -DCMAKE_PREFIX_PATH=${_prefix}/lib64/cmake/Qore .
 %{__make}
 
 %install
-make install VERBOSE=1 DESTDIR=$RPM_BUILD_ROOT
-
-%post
-ldconfig %{_libdir}
-
-%postun
-ldconfig %{_libdir}
-
-%clean
-rm -rf $RPM_BUILD_ROOT
+make DESTDIR=%{buildroot} install
 
 %files
-%defattr(-,root,root,-)
 %{module_dir}
-%doc COPYING README test/* doc/html
-
 
 %changelog
+* Thu Jan 27 2022 David Nichols <david@qore.org> 1.0.0
+- updated to version 1.0.0
+
 * Mon Jul 29 2013 Petr Vanek <petr.vanek@qoretechnologies.com> 0.0.1
 - initial package for Version 0.0.1
 

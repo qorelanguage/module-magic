@@ -4,7 +4,7 @@
 
   Qore Programming Language
 
-  Copyright 2012 - 2020 Qore Technologies, s.r.o.
+  Copyright 2012 - 2022 Qore Technologies, s.r.o.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ regardless of how the %Qore library was initialized).
 This module provides the following class:
 - @ref Qore::Magic::Magic "Magic"
 
-The *Single Unix Specification (SUS)* specifies that a series of tests are
+The <i>Single Unix Specification (SUS)</i> specifies that a series of tests are
 performed on the file specified on the command line:
 - if the file cannot be read, its status undetermined, or its type undetermined,
   @ref Qore::Magic::Magic "Magic" will indicate that the file was processed and its type was undetermined.
@@ -73,4 +73,7 @@ The above command would result in the following output when executed on a standa
 @verbatim
 "inode/symlink; charset=binary"
 @endverbatim
+
+    @subsection magic_1_0_0 magic Module Version 1.0.0
+    - initial release
 */
