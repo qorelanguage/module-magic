@@ -26,7 +26,7 @@
 
 /** @defgroup magic_constants libmagic Constants
 */
-//@{
+///@{
 namespace Qore::Magic;
 //! No flags
 const MAGIC_NONE              = 0x000000;
@@ -76,7 +76,7 @@ const MAGIC_NO_CHECK_TOKENS   = 0x100000;
 const MAGIC_NO_CHECK_ENCODING = 0x200000;
 //! No built-in tests only consult the magic file
 const MAGIC_NO_CHECK_BUILTIN  = 0x3fb000;
-//@}
+///@}
 
 //! A low level wrapper around libmagic
 /**
