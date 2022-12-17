@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 2.8.3)
+cmake_minimum_required(VERSION 2.8.12)
 
 project(qore-magic-module)
 
 set (VERSION_MAJOR 1)
 set (VERSION_MINOR 0)
-set (VERSION_PATCH 0)
+set (VERSION_PATCH 1)
 
 # where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake )

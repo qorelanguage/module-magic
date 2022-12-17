@@ -74,6 +74,9 @@ The above command would result in the following output when executed on a standa
 "inode/symlink; charset=binary"
 @endverbatim
 
+    @subsection magic_1_0_1 magic Module Version 1.0.1
+    - aligned release with qpp from %Qore
+
     @subsection magic_1_0_0 magic Module Version 1.0.0
     - initial release
 */

@@ -32,7 +32,7 @@
 
 Summary: Libmagic module for Qore
 Name: qore-magic-module
-Version: 1.0.0
+Version: 1.0.1
 Release: 1%{dist}
 License: LGPL-2.0+
 Group: Development/Languages/Other
@@ -82,6 +82,9 @@ magic module.
 %doc docs/magic test
 
 %changelog
+* Sat Dec 17 2022 David Nichols <david@qore.org> 1.0.1
+- updated to version 1.0.1
+
 * Thu Jan 27 2022 David Nichols <david@qore.org> 1.0.0
 - updated to version 1.0.0
 
