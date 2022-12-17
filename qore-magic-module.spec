@@ -13,10 +13,8 @@
 # get *suse release minor version without trailing zeros
 %define os_min %(echo %suse_version|rev|cut -b-2|rev|sed s/0*$//)
 
-%if %suse_version > 1010
+%if %suse_version
 %define dist .opensuse%{os_maj}_%{os_min}
-%else
-%define dist .suse%{os_maj}_%{os_min}
 %endif
 
 %endif
@@ -42,8 +40,9 @@ URL: http://qore.org
 Source: %{name}-%{version}.tar.bz2
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 BuildRequires: gcc-c++
-BuildRequires: qore-devel
-BuildRequires: qore
+BuildRequires: qore-devel >= 1.12.4
+BuildRequires: qore-stdlib >= 1.12.4
+BuildRequires: qore >= 1.0
 BuildRequires: cmake
 BuildRequires: file-devel
 BuildRequires: doxygen
@@ -58,12 +57,29 @@ libmagic (file magic) API for the Qore Programming Language
 export CXXFLAGS="%{?optflags}"
 cmake -DCMAKE_INSTALL_PREFIX=%{_prefix} -DCMAKE_BUILD_TYPE=RELWITHDEBINFO -DCMAKE_SKIP_RPATH=1 -DCMAKE_SKIP_INSTALL_RPATH=1 -DCMAKE_SKIP_BUILD_RPATH=1 -DCMAKE_PREFIX_PATH=${_prefix}/lib64/cmake/Qore .
 %{__make}
+%{__make} docs
+sed -i 's/#!\/usr\/bin\/env qore/#!\/usr\/bin\/qore/' test/*.qtest
 
 %install
 make DESTDIR=%{buildroot} install
 
 %files
 %{module_dir}
+
+%check
+qore -l ./magic-api-1.3.qmod test/magic.qtest
+
+%package doc
+Summary: Documentation and examples for the Qore magic module
+Group: Development/Languages/Other
+
+%description doc
+This package contains the HTML documentation and example programs for the Qore
+magic module.
+
+%files doc
+%defattr(-,root,root,-)
+%doc docs/magic test
 
 %changelog
 * Thu Jan 27 2022 David Nichols <david@qore.org> 1.0.0

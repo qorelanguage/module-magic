@@ -1,0 +1,28 @@
+#!/usr/bin/env qore
+
+%requires magic
+
+%new-style
+%require-types
+%strict-args
+%enable-all-warnings
+
+%requires QUnit
+%requires Mime
+
+%exec-class MagicTest
+
+class MagicTest inherits Test {
+    constructor() : Test("MagicTest", "1.0") {
+        addTestCase("Magic main", \test());
+        set_return_value(main());
+    }
+
+    test() {
+        Magic m(MAGIC_MIME_TYPE);
+        assertEq(MimeTypeText, m.file(get_script_path()));
+        assertEq(MimeTypeText, m.file(get_script_dir() + "/qore.txt"));
+        assertEq(MimeTypeJpeg, m.file(get_script_dir() + "/qore.jpg"));
+        assertEq(MimeTypePng, m.file(get_script_dir() + "/qore.png"));
+    }
+}
