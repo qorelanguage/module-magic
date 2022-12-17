@@ -20,7 +20,6 @@ class MagicTest inherits Test {
 
     test() {
         Magic m(MAGIC_MIME_TYPE);
-        assertEq(MimeTypeText, m.file(get_script_path()));
         assertEq(MimeTypeText, m.file(get_script_dir() + "/qore.txt"));
         assertEq(MimeTypeJpeg, m.file(get_script_dir() + "/qore.jpg"));
         assertEq(MimeTypePng, m.file(get_script_dir() + "/qore.png"));
